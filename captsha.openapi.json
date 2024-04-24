@@ -1,59 +1,62 @@
 {
-	"$schema": "http://spec.openapis.org/oas/3.0/schema/latest",
 	"openapi": "3.0.1",
 	"info": {
 		"title": "Captsha",
 		"version": "1.0.0",
 		"description": "Completely Automated Private Tacticalmanx75 to tell Skids and Humans Apart. Captsha is a ChatGPT Action that allows you to remotely control Roblox servers."
 	},
-	"servers": [{
-		"url": "http://localhost:3000"
-	}],
+	"servers": [
+		{
+			"url": "https://julia-leonard-wal-concluded.trycloudflare.com"
+		}
+	],
 	"paths": {
 		"/": {
 			"post": {
+				"x-openai-isConsequential": false,
+				"operationId": "execute",
 				"description": "Run a Luau code snippet on all servers of the Captsha has access to using loadstring. Returns an object where the keys are server job IDs and the values are the result of the code snippet running on each. To get a result, you will need to return at the end of your code snippet.",
-				"parameters": [{
-					"required": true,
-					"name": "code",
-					"in": "query",
-					"schema": {
-						"type": "string"
-					},
-					"examples": {
-						"Find what server a player is in": {
-							"description": "",
-							"value": "if game:GetService('Players'):FindFirstChild('tacticalmanx75') then return game.PlaceId end"
+				"parameters": [
+					{
+						"required": true,
+						"name": "code",
+						"in": "query",
+						"schema": {
+							"type": "string"
 						},
-						"Shut down all servers": {
-							"description": "Roblox shuts down servers with no players. task.delay is used so that the servers can send the response before shutting down, so that it comes before the script stops running.",
-							"value": "task.delay(1, function ()\n\tfor _, player in pairs(game:GetService('Players'):GetPlayers()) do\n\t\tplayer:Kick('Game shut down by Captsha')\n\tend\nend)"
-						},
-						"Find out a player's country": {
-							"description": "This code will return the two-character country code of the player if they're in a server Captsha has power over.",  
-							"value": "local player = game:GetService('Players'):FindFirstChild('tacticalmanx75')\nif player then\n\treturn game:GetService('LocalizationService'):GetCountryRegionForPlayerAsync(player)\nend"
-						},
-						"Get the player count": {
-							"value": "return #game:GetService('Players'):GetPlayers()"
-						},
-						"Shut down one server": {
-							"description": "You could use this `if game.JobId` condition to filter any code to only run on a specific server.",
-							"value": "if game.JobId ~= 'some-random-server-jobid' then\n\treturn\nend\ntask.delay(1, function ()\n\tfor _, player in pairs(game:GetService('Players'):GetPlayers()) do\n\t\tplayer:Kick('Server shut down by Captsha')\n\tend\nend)" 
+						"examples": {
+							"Find what server a player is in": {
+								"description": "",
+								"value": "if game:GetService('Players'):FindFirstChild('tacticalmanx75') then return game.PlaceId end"
+							},
+							"Shut down all servers": {
+								"description": "Roblox shuts down servers with no players. task.delay is used so that the servers can send the response before shutting down, so that it comes before the script stops running.",
+								"value": "task.delay(1, function ()\n\tfor _, player in pairs(game:GetService('Players'):GetPlayers()) do\n\t\tplayer:Kick('Game shut down by Captsha')\n\tend\nend)"
+							},
+							"Find out a player's country": {
+								"description": "This code will return the two-character country code of the player if they're in a server Captsha has power over.",
+								"value": "local player = game:GetService('Players'):FindFirstChild('tacticalmanx75')\nif player then\n\treturn game:GetService('LocalizationService'):GetCountryRegionForPlayerAsync(player)\nend"
+							},
+							"Get the player count": {
+								"value": "return #game:GetService('Players'):GetPlayers()"
+							},
+							"Shut down one server": {
+								"description": "You could use this `if game.JobId` condition to filter any code to only run on a specific server.",
+								"value": "if game.JobId ~= 'some-random-server-jobid' then\n\treturn\nend\ntask.delay(1, function ()\n\tfor _, player in pairs(game:GetService('Players'):GetPlayers()) do\n\t\tplayer:Kick('Server shut down by Captsha')\n\tend\nend)"
+							}
 						}
 					}
-				}],
+				],
 				"responses": {
 					"200": {
 						"description": "OK",
 						"content": {
 							"application/json": {
-								"schema": {
-									"type": "object"
-								},
+								"schema": {},
 								"examples": {
 									"Return the server and place a player is in": {
 										"description": "Assuming the code from the parameter example of the same name was run",
-										"summary": "An object with with job IDs as keys. The job id of the server the player is in also the place ID, the rest are null.",  
+										"summary": "An object with with job IDs as keys. The job id of the server the player is in also the place ID, the rest are null.",
 										"value": {
 											"d47ac21e-eeaf-4d79-be92-26931cd840bc": 1234567890,
 											"76b9f2ab-9261-4944-8ec3-a8999ed2a982": null,
@@ -71,7 +74,7 @@
 									},
 									"Get the player count": {
 										"description": "Assuming the code from the parameter example of the same name was run",
-										"summary": "An Object with the values being the player count of each server", 
+										"summary": "An Object with the values being the player count of each server",
 										"value": {
 											"d47ac21e-eeaf-4d79-be92-26931cd840bc": 5,
 											"76b9f2ab-9261-4944-8ec3-a8999ed2a982": 10,
