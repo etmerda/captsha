@@ -1,0 +1,19 @@
+{
+  "name": "captsha",
+  "module": "captsha.tsx",
+  "type": "module",
+  "license": "MPL-2.0",
+  "description": "Completely Automated Private Tacticalmanx75 to tell Skids and Humans Apart",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "scripts": {
+    "start": "bun run captsha.tsx"
+  },
+  "dependencies": {
+    "hono": "^4.2.7"
+  }
+}
