@@ -1,4 +1,4 @@
-local SERVER_URL = "http://localhost:3000" -- Edit this to your Captsha server URL!
+local SERVER_URL = "https://julia-leonard-wal-concluded.trycloudflare.com/" -- Edit this to your Captsha server URL!
 --[[
 	  ##  ##
 	##########
@@ -14,26 +14,24 @@ local SERVER_URL = "http://localhost:3000" -- Edit this to your Captsha server U
 ]]
 
 local HttpService = game:GetService("HttpService")
+local RunService = game:GetService("RunService")
 
 local req = {
 	promptId = "ping",
-	response = "pong",
-	jobId = game.JobId,
+	jobId = if RunService:IsStudio() then "Studio" else game.JobId,
 }
 while true do
-	local req = HttpService:JSONDecode(HttpService:PostAsync(SERVER_URL, HttpService:JSONEncode(res)))
-	if req.promptId == "ping" then
-		if HttpService:IsStudio() then
-			print("Nothing happened in the past 30 seconds")
-		end
-	else
-		if HttpService:IsStudio() then
-			print("Running code from Captsha server", code)
-		end
-		res.promptId = req.promptId
-		res.response = loadstring(req.code)()
+	local res = HttpService:JSONDecode(HttpService:PostAsync(SERVER_URL, HttpService:JSONEncode(req)))
+	req.promptId = res.promptId
+	if res.promptId ~= "ping" then
+		local success, response = pcall(loadstring(res.code))
+		if success then
+			req.response = response
+		else
+			req.response = { error = response }
+		end 
 	end
-	if HttpService:IsStudio() then
-		print("Sending response to Captsha server", res)
+	if RunService:IsStudio() then
+		print("Sending response to Captsha server", req)
 	end
 end
