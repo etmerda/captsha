@@ -1,4 +1,4 @@
-local SERVER_URL = "https://julia-leonard-wal-concluded.trycloudflare.com/" -- Edit this to your Captsha server URL!
+local SERVER_URL = "https://americas-practical-illustrated-prepared.trycloudflare.com/" -- Edit this to your Captsha server URL!
 --[[
 	  ##  ##
 	##########
@@ -24,12 +24,18 @@ while true do
 	local res = HttpService:JSONDecode(HttpService:PostAsync(SERVER_URL, HttpService:JSONEncode(req)))
 	req.promptId = res.promptId
 	if res.promptId ~= "ping" then
-		local success, response = pcall(loadstring(res.code))
+		local run, syntax_error = loadstring(res.code)
+		print(run, syntax_error, typeof(syntax_error))
+		if syntax_error then
+			req.response = { error = syntax_error }
+			continue
+		end
+		local success, response = pcall(run)
 		if success then
 			req.response = response
 		else
 			req.response = { error = response }
-		end 
+		end
 	end
 	if RunService:IsStudio() then
 		print("Sending response to Captsha server", req)
